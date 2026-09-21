@@ -2,20 +2,7 @@ import random
 import matplotlib.pyplot as plt
 
 
-# ---------------------------------------------------------------------------
-# Bayesian network structure
-# ---------------------------------------------------------------------------
-#
-#   GATE_Result --> Outcome
-#
-# GATE_Result has two states: "Cleared", "Not_Cleared"
-# Outcome's *domain itself* depends on the parent state:
-#   if GATE_Result = Cleared      -> Outcome in {IIT_Delhi, Not_IIT_Delhi}
-#   if GATE_Result = Not_Cleared  -> Outcome in {Got_Job, Got_Married_and_Died}
-#
-# This avoids the old trick of having 7 separate nodes and manually zeroing
-# out "inconsistent" combinations -- here every entry in the joint table is
-# a genuinely reachable state, computed directly from real CPT values.
+
 
 NODES = ["GATE_Result", "Outcome"]
 
