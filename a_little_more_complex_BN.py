@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def displaying_highest_joint_probability(joint_probabilities):
     state_names = [
-        "GATE",
+        "GATE_Attempted",
         "GATE_Cleared",
         "GATE_Not_Cleared",
         "IIT_Delhi",
@@ -31,13 +31,13 @@ def displaying_highest_joint_probability(joint_probabilities):
 def future():
 
     #defining the nodes
-    nodes = ['GATE', 'GATE_Cleared', 'GATE_Not_Cleared', 'IIT_Delhi', 'Not_IIT_Delhi', 'Got_Job', 'Got_Married_and_Died']
+    nodes = ['GATE_Attempted', 'GATE_Cleared', 'GATE_Not_Cleared', 'IIT_Delhi', 'Not_IIT_Delhi', 'Got_Job', 'Got_Married_and_Died']
 
     #DEFINING THE PARENT CHILD RELATIONSHIPS
     parents = {
-        "GATE": [],
-        "GATE_Cleared": ["GATE"],
-        "GATE_Not_Cleared": ["GATE"],
+        "GATE_Attempted": [],
+        "GATE_Cleared": ["GATE_Attempted"],
+        "GATE_Not_Cleared": ["GATE_Attempted"],
         "IIT_Delhi": ["GATE_Cleared"],
         "Not_IIT_Delhi": ["GATE_Cleared"],
         "Got_Job": ["GATE_Not_Cleared"],
@@ -47,7 +47,7 @@ def future():
     #defining the conditional probability tables (CPTs)
 
     #generating a random probability for GATE
-    gate_true = random.uniform(0, 0.8)  #probability of clearing GATE
+    gate_true= random.uniform(0, 0.8)  #probability of clearing GATE
 
     gate_cleared_true_given_gate = {
         "True": random.uniform(0, 1),
@@ -63,7 +63,7 @@ def future():
     }
 
     condtional_probabilities = {
-        "GATE": {"True": gate_true,
+        "GATE_Attempted": {"True": gate_true,
                  "False": 1 - gate_true},
         "GATE_Cleared": {
             gate_state: {"True": probability, "False": 1 - probability}
@@ -123,13 +123,13 @@ def future():
                                         val = 0
                                     else:
                                         val = (
-                                            conditional_probabilities["GATE"][gate_state]
+                                            conditional_probabilities["GATE_Attempted"][gate_state]
                                             * conditional_probabilities["GATE_Cleared"][gate_state][gate_cleared]
                                             * conditional_probabilities["IIT_Delhi"][gate_cleared][iit_delhi]
                                             * conditional_probabilities["Got_Job"][gate_not_cleared][got_job]
                                         )
                                     joint_probabilities[(gate_state, gate_cleared, gate_not_cleared, iit_delhi, not_iit_delhi, got_job, got_married_and_died)] = val
-                                    print(f"P(GATE={gate_state}, GATE_Cleared={gate_cleared}, GATE_Not_Cleared={gate_not_cleared}, IIT_Delhi={iit_delhi}, Not_IIT_Delhi={not_iit_delhi}, Got_Job={got_job}, Got_Married_and_Died={got_married_and_died}) = {val:.4f}")
+                                    print(f"P(GATE_Attempted={gate_state}, GATE_Cleared={gate_cleared}, GATE_Not_Cleared={gate_not_cleared}, IIT_Delhi={iit_delhi}, Not_IIT_Delhi={not_iit_delhi}, Got_Job={got_job}, Got_Married_and_Died={got_married_and_died}) = {val:.4f}")
         return joint_probabilities
 
     def plot_joint_probabilities(joint_probabilities):
