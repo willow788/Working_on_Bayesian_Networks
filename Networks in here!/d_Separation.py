@@ -29,6 +29,7 @@ nx.draw(
 )
 
 plt.title("Bayesian Network: Rain, Sprinkler, Wet Grass")
+plt.savefig("bayesian_network.png")  # Save the figure as a PNG file
 plt.show()
 
 #now we will be implementing the d separation on this graph
