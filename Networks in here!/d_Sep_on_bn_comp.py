@@ -48,38 +48,41 @@ plt.title("Bayesian  Network: a more complex example")
 plt.savefig("bayesian_network_complex.png")  # Save the figure as a PNG file
 plt.show()
 
+def is_collider(bn, previous_node, current_node, next_node):
+    """
+    Check if the current node is a collider in the path.
+    A node is a collider if both edges point into it.
+    """
+    return bn.has_edge(previous_node, current_node) and bn.has_edge(next_node, current_node)
+
+
+
 
 #d separation function
 def d_separated(bn, x, y, z):
+    """Return whether ``x`` and ``y`` are d-separated given ``z``.
 
-    #11st finding the unidirected path btw x and y
-    unidirected_path = bn.to_undirected()
+    D-separation can be tested by taking the ancestors of X, Y, and Z,
+    moralizing that ancestral graph, removing the observed nodes, and
+    checking whether X and Y are still connected.
+    """
+    observed = set(z)
+    ancestors = set(observed) | {x, y}
 
-    paths = list(
-        nx.all_simple_paths(
-            unidirected_path,
-            source=x,
-            target=y
-        )
-    )
+    for node in tuple(ancestors):
+        ancestors.update(nx.ancestors(bn, node))
 
-    #checking  every path
-    for road in paths:
+    ancestral_graph = bn.subgraph(ancestors).copy()
+    moral_graph = ancestral_graph.to_undirected()
 
-        #checking if the path between x and y is blocked by z
-        print('Checking path: ', "->".join(road))
+    for node in ancestral_graph:
+        parents = list(ancestral_graph.predecessors(node))
+        moral_graph.add_edges_from((parent, other_parent)
+                                   for index, parent in enumerate(parents)
+                                   for other_parent in parents[index + 1:])
 
-        #checking if the middle nodes are contained in z
-        middle_nodes = road[1:-1]  # Exclude the start and end nodes
-
-        if middle_nodes in z:
-            print(f"Path {road} is blocked by {z}.")
-            return True  # Path is blocked
-        else:
-            print(f"Path {road} is not blocked by {z}.")
-            return False  # Path is not blocked
-
-        return False  # If no paths are blocked, return False
+    moral_graph.remove_nodes_from(observed)
+    return not nx.has_path(moral_graph, x, y)
 
 
 def main():
@@ -105,6 +108,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
 
     
