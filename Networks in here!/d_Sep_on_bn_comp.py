@@ -81,6 +81,30 @@ def d_separated(bn, x, y, z):
 
         return False  # If no paths are blocked, return False
 
+
+def main():
+
+    print("D-Separation Check:")
+    print('are rain and sprinkler d_separated given nothing?')
+
+    result = d_separated(bn, "Rain", "Sprinkler", [])
+    print(f"Result: {result}")
+
+    print('are rain and sprinkler d_separated given wet grass?')
+    result = d_separated(bn, "Rain", "Sprinkler", ["Wet Grass"])
+    print(f"Result: {result}")
+
+    print('are rain and sprinkler d_separated given traffic jam?')
+    result = d_separated(bn, "Rain", "Sprinkler", ["Traffic Jam"])
+    print(f"Result: {result}")
+
+    print('are rain and sprinkler d_separated given cost?')
+    result = d_separated(bn, "Rain", "Sprinkler", ["Cost"])
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    main()
     
 
     
