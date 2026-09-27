@@ -1,4 +1,6 @@
 #now we will generate a more complex bn
+
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -11,7 +13,8 @@ bn.add_edges_from([
     ("Rain", "Traffic Jam"),
     ("Sprinkler","Wet Grass"),
     ("Sprinkler","Traffic Jam"),
-    ("Sprinkler", "Cost")
+    ("Sprinkler", "Cost"),
+    ("Wet Grass", "Grass quality"),
 ])
 
 """
@@ -33,7 +36,8 @@ pos = {
     "Sprinkler": (1, 1),
     "Wet Grass": (0, 0),
     "Traffic Jam": (1, 0),
-    "Cost": (0.5, -1)}
+    "Cost": (0.5, -1),
+    "Grass quality": (0, -1),}
 
 #drawing the network
 nx.draw(bn,
@@ -54,6 +58,13 @@ def is_collider(bn, previous_node, current_node, next_node):
     A node is a collider if both edges point into it.
     """
     return bn.has_edge(previous_node, current_node) and bn.has_edge(next_node, current_node)
+
+def get_descendants(bn, node):
+
+    kids = nx.descendants(bn, node)
+    return kids
+
+
 
 
 
@@ -103,6 +114,10 @@ def main():
 
     print('are rain and sprinkler d_separated given cost?')
     result = d_separated(bn, "Rain", "Sprinkler", ["Cost"])
+    print(f"Result: {result}")
+
+    print('are rain and sprinkler d_separated given grass quality?')
+    result = d_separated(bn, "Rain", "Sprinkler", ["Grass quality"])
     print(f"Result: {result}")
 
 
